@@ -4,9 +4,27 @@ from .vacancy import Vacancy
 
 class HeadHunterAPI(AbstractAPI):
     def __init__(self, base_url='https://api.hh.ru'):
+        """
+               Инициализирует объект HeadHunterAPI.
+
+               Args:
+                   base_url (str, optional): Базовый URL для API HeadHunter. По умолчанию 'https://api.hh.ru'.
+
+               Returns:
+                   None
+               """
         self.base_url = base_url
 
     def get_vacancies(self, search_query):
+        """
+               Получает список вакансий по заданному поисковому запросу.
+
+               Args:
+                   search_query (str): Поисковый запрос для поиска вакансий.
+
+               Returns:
+                    Список вакансий.
+               """
         vacancies = []
         response = requests.get("https://api.hh.ru/vacancies", params={"text": search_query})
         response.raise_for_status()

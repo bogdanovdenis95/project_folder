@@ -1,10 +1,19 @@
 import requests
 from src.hh_api import HeadHunterAPI
-from src.data_manager import DataManager
+from src.data_manager import DataManager, JSONFileManager
 from src.vacancy import Vacancy
 
-
 def search_vacancies(api, search_query):
+    """
+        Поиск вакансий с использованием API.
+
+        Args:
+            api (HeadHunterAPI): Объект API для получения вакансий.
+            search_query (str): Запрос для поиска вакансий.
+
+        Returns:
+            list: Список найденных вакансий.
+        """
     try:
         vacancies = api.get_vacancies(search_query)
         print("Vacancies found:")
@@ -16,11 +25,32 @@ def search_vacancies(api, search_query):
 
 
 def save_vacancies(data_manager, filename, vacancies):
+    """
+        Сохранение списка вакансий в файл.
+
+        Args:
+            data_manager (DataManager): Менеджер данных для сохранения.
+            filename (str): Имя файла для сохранения.
+            vacancies (list): Список вакансий для сохранения.
+
+        Returns:
+            None
+        """
     data_manager.save_vacancies(filename, vacancies)
     print(f"Vacancies saved to {filename}")
 
 
 def load_vacancies(data_manager, filename):
+    """
+        Загрузка списка вакансий из файла.
+
+        Args:
+            data_manager (DataManager): Менеджер данных для загрузки.
+            filename (str): Имя файла для загрузки.
+
+        Returns:
+            list: Список загруженных вакансий.
+        """
     vacancies = data_manager.load_vacancies(filename)
     if vacancies:
         print("Vacancies loaded successfully:")
@@ -33,7 +63,8 @@ def load_vacancies(data_manager, filename):
 
 def user_interaction():
     api = HeadHunterAPI()
-    data_manager = DataManager()
+    file_manager = JSONFileManager()  # Создаем объект JSONFileManager
+    data_manager = DataManager(file_manager)  # Передаем его в конструктор DataManager
     filename = 'vacancies.json'
 
     search_query = input("Enter your search query: ")
